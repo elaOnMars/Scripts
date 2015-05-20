@@ -33,7 +33,7 @@ rm ~/users/user-mailfolder/.INBOX.trash_publicmails/cur/*
 # Mail the content of source mail folder with none important mails which gets deleted later.
 # The egrep syntax needs some improvement.
 
-ls -lath ~/uusers/user-mailfolder/.IMBOX.trash_publicmails/cur/ |
+ls -lath ~/uusers/user-mailfolder/.INBOX.trash_publicmails/cur/ |
    grep -v -e "*avior*"|
    awk '{print $6, $7, $8, $9;}'|
    mail -s "[---- MAILS  DELETED ----]" mailfolder@somemailuser.foo
