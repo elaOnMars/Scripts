@@ -1,0 +1,43 @@
+#!/usr/bash
+
+/*!
+ * Bash shell script
+ * Find unimportant mails (flag 'F') and move them to trash (Dovecot)
+ * 
+ *
+ * 2015-05-20, Daniela Knoll.
+ * Released under GNU GENERAL PUBLIC LICENSE
+ * <http://fsf.org/>
+ *
+ * author: Daniela Knoll <daniela@datentupel.de>
+ */
+
+: <<'COMMENT'
+This script finds all dovecot mail files which do not have a
+  'F'-flag (important) which means I don't like to delete them
+  and moves them to trash.
+
+  Run this script monthly or weekly will keep your mailbox free
+  of newsletters or similar which you still delete from time to time.
+
+  'foo:2,S'   # read and unimportant   ---> move to trash
+  'foo:2,FS'  # read and important
+  'foo:2,'    # unread                 ---> move to trash
+  'foo:2,F'   # unread and important
+COMMENT
+
+# Remove old mails from last week/month
+rm ~/users/user-mailfolder/.INBOX.trash_publicmails/cur/*
+
+
+# Mail the content of source mail folder with none important mails which gets deleted later.
+# The egrep syntax needs some improvement.
+
+ls -lath ~/uusers/user-mailfolder/.IMBOX.trash_publicmails/cur/ |
+   grep -v -e "*avior*"|
+   awk '{print $6, $7, $8, $9;}'|
+   mail -s "[---- MAILS  DELETED ----]" mailfolder@somemailuser.foo
+
+# Find all none important mails and move them to trash
+find ~/users/user-mailfolder/.INBOX.trash_publicmails/cur/* ! -name '*2,F*' -type f -print |
+   xargs -i mv {} ~/users/user-mailfolder/.INBOX.trash_mailfolder/cur/
