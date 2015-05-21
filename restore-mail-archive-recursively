@@ -1,0 +1,18 @@
+
+
+#!/usr/bash
+
+/*!
+ * Bash shell script
+ * Copy mails from your backup folder to your current mail folder
+ * 
+ *
+ * 2015-05-21, Daniela Knoll.
+ * Released under GNU GENERAL PUBLIC LICENSE
+ * <http://fsf.org/>
+ *
+ * author: Daniela Knoll <hallo@datentupel.de>
+ */
+
+# Find files in folder and subfolders NOT beginning with 'dove' and copy them to your current mail folder recursively
+find ./backups/user/week_5/home/users/mailadress/ -type f ! -name 'dove*' -exec cp '{}' '~/users/mailadress/{}' ';'
