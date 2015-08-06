@@ -1,0 +1,2 @@
+cd $HOME/backups/
+ssh daniela@meinserver.de -i ~/.ssh/id_rsa "tar cvzf - ~/home/daniela" | dd of=./today_daniela.home_BACKUP.tar.gz 
