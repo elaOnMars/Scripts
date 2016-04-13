@@ -1,0 +1,29 @@
+"""
+This code processes each xlsx file in the xlsx/* path,
+ then writes the data (a list of values) to CSV files stored in the csv/ path
+ 
+ Thanks to Dan Nguyen - dannguyen - https://gist.github.com/dannguyen
+ https://gist.github.com/dannguyen/d83f27a93b2e6f80edda22cfa0f0a1d6
+"""
+
+from csv import writer
+from glob import glob
+from os.path import basename, join
+from os import makedirs
+from xlrd import open_workbook
+import re
+
+CSV_DIRNAME = 'csv'
+makedirs(CSV_DIRNAME, exist_ok=True)
+
+for xfname in glob(join('xlsx', '*', '*.xlsx')):    
+    cname = join(CSV_DIRNAME, basename(xfname) + '.csv')
+    print("writing to", cname)
+    cf = open(cname, 'w')
+    cv = writer(cf)
+    book = open_workbook(xfname)
+    sheet = book.sheets()[0]
+    for n in range(sheet.nrows):
+        rowvals = sheet.row_values(n)
+        cv.writerow(rowvals)
+    cf.close()
