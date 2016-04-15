@@ -1,4 +1,9 @@
 #!/usr/bin/env python
+'''
+  This script parses the XML files from a XML site
+'''
+
+
 ## -*- coding: iso-8859-1 -*-
 # -*- coding: utf-8 -*-
 
@@ -6,7 +11,7 @@ from lxml import html
 import requests
 
 # Page http://www.srf.ch/sendungen/wissenschaftsmagazin
-page_srf = requests.get('http://podcasts.srf.ch/wissenschaft_drs_2_mpx.xml', stream=True)
+page_srf = requests.get('http://....xml', stream=True)
 tree_srf = html.fromstring(page_srf.content)
 
 # print(tree_srf.xpath('//div[@class="module-content"]/ul/li/text()'))
@@ -24,7 +29,8 @@ for child_of_root in tree_srf:
 print("============================")
 # Finding interesting elements
 for elem in tree_srf.iter():
-    #print("ELEM: ", elem.tag, elem.attrib, elem.text)
+    # Print elements and tags to find the most interesting tags
+    # print("ELEM: ", elem.tag, elem.attrib, elem.text)
     if elem.tag == 'title':
         print("TITLE: ", elem.text)
     if elem.tag == 'description':
