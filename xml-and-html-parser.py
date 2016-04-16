@@ -9,6 +9,7 @@
     Usefull help sites: 
     -------------------
     Extracting attributes from HTML with lxml: 
+    - http://lxml.de/tutorial.html
     - http://stackoverflow.com/questions/27070227/extracting-attributes-from-html-with-lxml
     
     
