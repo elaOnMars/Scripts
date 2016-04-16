@@ -1,6 +1,11 @@
 #!/usr/bin/env python
 '''
   This script parses the XML files from a XML site
+  Daniela Knoll, 2016-04-16
+  
+  Inspirated from 
+  http://robotframework.org/robotframework/latest/libraries/XML.html and
+  http://eli.thegreenplace.net/2012/03/15/processing-xml-in-python-with-elementtree
 '''
 
 
@@ -16,13 +21,9 @@ tree_srf = html.fromstring(page_srf.content)
 
 # print(tree_srf.xpath('//div[@class="module-content"]/ul/li/text()'))
 
-
 for child_of_root in tree_srf:
    print("CHILD: ", child_of_root.tag, child_of_root.attrib)
 
-
-# http://robotframework.org/robotframework/latest/libraries/XML.html
-# http://eli.thegreenplace.net/2012/03/15/processing-xml-in-python-with-elementtree
 # for elem in tree_srf.iterfind('branch/sub-branch'):
 #   print elem.tag, elem.attrib
 
