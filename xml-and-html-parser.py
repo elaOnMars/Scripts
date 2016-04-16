@@ -5,6 +5,11 @@
     This script scrapes the news entries from the University of Cologne.
     As the news site is not in XML format, it is a little bit tricky to parse
     the content of the site including the links. The links had to be reconstructed new.
+    
+    The site I've used in this example really exists. Please check their
+    site's terms and conditions before you scrape this site. I've kept the
+    site as an example to demonstrate the syntax I've used. Please scrape some other
+    intersting web sites and do not send too much web requests to them.
 
     Usefull help sites: 
     -------------------
