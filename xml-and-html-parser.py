@@ -94,7 +94,14 @@ for elem in tree_srf.iter():
         count += 1
         
         print("\n=================\n")
-    
+
+# Clear cache
+count.clear()
+elem.clear()
+url.clear()
+root_link.clear()
+page_srf.clear()
+tree_srf.clear()
 
 
 # http://robotframework.org/robotframework/latest/libraries/XML.html
@@ -123,3 +130,6 @@ for elem in tree_srf.iter():
  
     # Bad formated HTML files view above:
         #print(tree_srf.xpath('//p[@class="bodytext"]/text()'))
+        
+# Clear cache
+elem.clear()
