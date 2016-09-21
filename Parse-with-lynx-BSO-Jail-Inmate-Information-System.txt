@@ -1,0 +1,113 @@
+This receipt will fetch all links
+from http://www.co.bibb.ga.us/BSOInmatesOnline/BSODetail.asp
+and saves them as a simple text file without any HTML tags.
+
+These links will be parsed to fetch the detailed information
+behind the links.
+
+At the end you will have text files in this form:
+  ...
+  BSODetail.asp?JacketID=308401&BookingID=244444-2016-09-21.txt
+  BSODetail.asp?JacketID=1960695&BookingID=244450-2016-09-21.txt
+  BSODetail.asp?JacketID=1324092&BookingID=244449-2016-09-21.txt
+
+
+Let's start!
+============
+
+1. First install the text browser lynx:
+  apt-get install lynx
+
+2. Dump website without HTML tags in a text file:
+  lynx --dump http://www.co.bibb.ga.us/BSOInmatesOnline/BSODetail.asp > dump_$(date +%F).txt
+
+
+The text file contains something like that:
+
+  ...
+  18. http://www.co.bibb.ga.us/BSOInmatesOnline/BSODetail.asp?JacketID=308401&BookingID=244444
+  19. http://www.co.bibb.ga.us/BSOInmatesOnline/BSODetail.asp?JacketID=1960695&BookingID=244450
+  20. http://www.co.bibb.ga.us/BSOInmatesOnline/BSODetail.asp?JacketID=1324092&BookingID=244449
+  21. http://www.co.bibb.ga.us/
+  22. http://www.co.bibb.ga.us/BSOInmatesOnline/BSOSearchPage.asp
+
+  
+As you can see, the links look all nearly the same: ...BSODetail.asp?
+
+  3. Grep only the links from your dump file
+    which are relevant to you and save them
+    in another text file dump-cleaned.txt
+
+    Run:
+    > grep 'http://www.co.bibb.ga.us/BSOInmatesOnline/BSODetail.asp?' dump_$(date +%F).txt  > dump-cleaned_$(date +%F).txt
+
+
+The cleaned dump file looks like this:
+> tail dump-cleaned_$(date +%F).txt
+
+  ...
+  18. http://www.co.bibb.ga.us/BSOInmatesOnline/BSODetail.asp?JacketID=308401&BookingID=244444
+  19. http://www.co.bibb.ga.us/BSOInmatesOnline/BSODetail.asp?JacketID=1960695&BookingID=244450
+  20. http://www.co.bibb.ga.us/BSOInmatesOnline/BSODetail.asp?JacketID=1324092&BookingID=244449
+
+
+But we need only the links without the trailing numbers 18., 19., etc.
+
+  4. Remove the trailing numbers with:
+  grep 'http://www.co.bibb.ga.us/BSOInmatesOnline/BSODetail.asp?' dump_$(date +%F).txt |cut -c7- > dump-cleaned_$(date +%F).txt 
+
+Now we have only the links in the file dump-cleaned_2016-09-21.txt,
+which we can parse directly from their website.
+
+  ...
+  http://www.co.bibb.ga.us/BSOInmatesOnline/BSODetail.asp?JacketID=308401&BookingID=244444
+  http://www.co.bibb.ga.us/BSOInmatesOnline/BSODetail.asp?JacketID=1960695&BookingID=244450
+  http://www.co.bibb.ga.us/BSOInmatesOnline/BSODetail.asp?JacketID=1324092&BookingID=244449
+
+
+
+==> Bash ONELINER:
+lynx --dump "http://www.co.bibb.ga.us/BSOInmatesOnline/CurrentDayMaster.asp" | \
+  grep 'http://www.co.bibb.ga.us/BSOInmatesOnline/BSODetail.asp?' | \
+  cut -c7- > dump-cleaned_$(date +%F).txt 
+
+
+Now you can grep the content behind the links and
+save it in a single text file.
+
+  5. Create a bash script parse-website.sh
+     and loop through your link list:
+
+--- SCRIPT START ---
+
+#!/bin/bash
+# Open file 
+file=dump-cleaned_$(date +%F).txt
+ while read line;
+   do
+     outfile=$(echo $line | awk 'BEGIN { FS = "/" } ; {print $NF}')
+   # Dump website without html tags
+   # curl -o "$outfile.html" "$line"
+   lynx --dump "$line" > "$outfile-$(date +%F).txt"
+   # Sleep 15 seconds between each dump or use 'sleep 1m' for 1 minute
+   sleep 15
+ done < "$file"
+
+--- SCRIPT END ---
+
+
+  5. Save script as parse-website.sh
+
+  6. Change permissions to make the file executable:
+  chmod u+x parse-website.sh
+
+
+You should then have the following text files:
+
+  ...
+  BSODetail.asp?JacketID=308401&BookingID=244444-2016-09-21.txt
+  BSODetail.asp?JacketID=1960695&BookingID=244450-2016-09-21.txt
+  BSODetail.asp?JacketID=1324092&BookingID=244449-2016-09-21.txt
+
+
+--- END ---
