@@ -1,0 +1,84 @@
+# During my search for a simple webscraper I found this site:
+# http://www.joyofdata.de/blog/using-linux-shell-web-scraping/
+#
+# It is impressive, how easy it is. You need a Linux terminal,
+# the package html-xml-utils and the text browser lynx. That's all!
+#
+# The command line is at the very bottom of this site.
+#
+# Please do not hammer the website in this example with the scraper script!
+# Respect the website's policy regarding automatic webscraping. I am not
+# responsible for any damages which could occur with it.
+
+: <<'END'
+  1. Open the site of interest.
+  2. View the source code of the website.
+  3. Look for the container <div ...> which interests you. For example <div id="header_":
+      <body class="layout">
+        <div id="287750" class="float-left even"><div id="header_287750" class="header bold">
+        <a href="http://europa.eu/rapid/press-release_IP-16-4311_en.htm"><span>IP/16/4311</span>&nbsp;
+					<span>07-12-2016</span>					-
+					<span>Commission welcomes agreement to ensure compliance of Intergovernmental Agreements in the
+            field of energy with EU law*</span>&nbsp;
+				</a></div><div id="desc_287750"><span class="bold">European Commission</span>&nbsp;-
+				<span class="description">European - Press release Commission Brussels, 7 December 2016 Negotiators of 
+          the European Parliament and the Council agreed today on having Intergovernmental Agreements in the 
+          field of gas and oil assessed by the Commission before they are signed.</span>
+        </div></div>
+        <div id="287672" class="float-left odd"><div id="header_287672" class="header bold">
+          <a href="http://europa.eu/rapid/press-release_SPEECH-16-4201_en.htm"><span>SPEECH/16/4201</span>&nbsp;
+					<span>01-12-2016</span>
+   ...
+
+# The result will look like this:
+Downloaded: 1 files, 8.7K in 0.04s (196 KB/s)
+   [1]IP/16/4311  07-12-2016 - Commission welcomes agreement to ensure
+   compliance of Intergovernmental Agreements in the field of energy with
+   EU law*
+
+   [2]SPEECH/16/4201  01-12-2016 - Vice-President Šefčovič at the SET Plan
+   2016 and at the 10th Central European Conference on Energy Union
+
+   [3]IP/16/4009  30-11-2016 - Clean Energy for All Europeans – unlocking
+   Europe's growth potential
+
+   [4]MEMO/16/3987  30-11-2016 - Achieving global leadership in renewable
+   energies
+
+   [5]MEMO/16/3986  30-11-2016 - Putting energy efficiency first:
+   consuming better, getting cleaner
+
+   [6]MEMO/16/3961  30-11-2016 - Providing a fair deal for consumers
+
+   [7]SPEECH/16/4162  30-11-2016 - Speech by Commissioner for Climate
+   Action and Energy Miguel Arias Cañete at the Clean Energy press
+   conference
+
+   [8]IP/16/3926  24-11-2016 - EU-Ukraine Summit: EU and Ukraine intensify
+   energy partnership
+
+   [9]SPEECH/16/3622  08-11-2016 - Remarks of First Vice-President
+   Timmermans and Vice-President Katainen on the new approach to
+   Ecodesign
+
+   [10]IP/16/3562  28-10-2016 - Gas markets: Commission reinforces market
+   conditions in revised exemption decision on OPAL pipeline
+
+References
+
+   1. http://europa.eu/rapid/press-release_IP-16-4311_en.htm
+   2. http://europa.eu/rapid/press-release_SPEECH-16-4201_en.htm
+   3. http://europa.eu/rapid/press-release_IP-16-4009_en.htm
+   4. http://europa.eu/rapid/press-release_MEMO-16-3987_en.htm
+   5. http://europa.eu/rapid/press-release_MEMO-16-3986_en.htm
+   6. http://europa.eu/rapid/press-release_MEMO-16-3961_en.htm
+   7. http://europa.eu/rapid/press-release_SPEECH-16-4162_en.htm
+   8. http://europa.eu/rapid/press-release_IP-16-3926_en.htm
+   9. http://europa.eu/rapid/press-release_SPEECH-16-3622_en.htm
+  10. http://europa.eu/rapid/press-release_IP-16-3562_en.htm
+END
+
+
+
+echo "http://europa.eu/rapid/search-result.htm?query=51&language=EN&format=HTML_EXPORT"| 
+  wget -O- -i- |hxnormalize -x | hxselect -i "div.header"| lynx -stdin -dump
